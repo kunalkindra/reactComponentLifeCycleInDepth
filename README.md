@@ -1,1 +1,1 @@
-# reactComponentLifeCycleInDepth
+# React - Component Lifecycle Deep dive
