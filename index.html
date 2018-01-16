@@ -24,42 +24,197 @@
 	<!--[if lt IE 9]>
 	<script src="./lib/lib/js/html5shiv.js"></script>
 	<![endif]-->
+	<style>
+		.reveal ul {
+			width: 100%;
+		}
+	</style>
 </head>
 <body>
 <div class="reveal">
 	<!-- Any section element inside of this container is displayed as a slide -->
 	<div class="slides">
 		<section>
-			<h2>React components - From birth to death</h2>
+			<h2>React components - From their birth to death</h2>
 			<img src="images/lifecycle.png" alt="Lifecycle events">
 		</section>
 		<section>
+			<h2>The 3 phases</h2>
+			<span class="fragment fade-in">Mounting</span>
+			<span class="fragment fade-in"> &gt; Updating</span>
+			<span class="fragment fade-in"> &gt; Un-mounting</span>
+		</section>
+		<section>
+			<h2>Mounting - Birth/Init phase</h2>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">0. </p><pre><code>constructor()</code></pre></div>
+			<section></section>
 			<section>
-				<h3>Sub slide title 1</h3>
-			</section>
-			<section>
-				<h3>Sub slide title 2</h3>
-				<div class="fragment" style="float: left; width: 33%;">
-					<h5>Fragment title 1</h5>
-					<p>Fragment content</p>
-				</div>
-				<div class="fragment" style="float: left; width: 33%;">
-					<h5>Fragment title 2</h5>
-					<p>Fragment content</p>
-				</div>
-				<div class="fragment" style="float: left; width: 33%;">
-					<h5>Fragment title 3</h5>
-					<p>Fragment content</p>
-				</div>
+				<ul>
+					<li>Component class init</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Default state, method binding</li>
+					<li><u>Can call setState</u> - Don’t. Use default state instead.</li>
+				</ul>
 			</section>
 		</section>
 		<section>
-			<h2>Slide 2 - Code demo</h2>
-			<pre>
-<code>let foo = 0;
-foo++;
-console.log(foo);</code>
-				</pre>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">1. </p><pre><code>componentWillMount()</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>The first thing to be called after the constructor</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - App configuration in your root component.</li>
+					<li><u>Can call setState</u> - Don’t. Use default state instead.</li>
+					<li><u>Common bloopers</u> - API call to the server, shouldn't be done here</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">2. </p><pre><code>componentDidMount()</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>This is where you contact your server</li>
+					<li>
+						The place to get your dom ready!
+						<ul>
+							<li>Initialize a 3rd party plugin - like masonry</li>
+							<li>Add any event listeners - like window resize</li>
+						</ul>
+					</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Dom manipulation and API calls</li>
+					<li><u>Can call setState</u> - Yes</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<h2>Updating - Live phase</h2>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">3. </p><pre><code>componentWillReceiveProps(nextProps)</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>This is where a lot of action happens</li>
+					<li>Any change in data without remounting a component needs to be handled here</li>
+					<li>Has access to both new props as well as old props</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Update computed state based on newProps, make API calls to update some data</li>
+					<li><u>Can call setState</u> - Yes, would be used mostly to do this</li>
+					<li><u>Common bloopers</u> - Not checking change of props</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">4. </p><pre><code>shouldComponentUpdate(nextProps, nextState)</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>Allows you to fine tune a component's renders</li>
+					<li>The render depends on its return type - false stops the next render</li>
+					<li>Has access to both nextProps, nextState and obviously the current state</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Controlling exactly when your component will re-render.</li>
+					<li><u>Can call setState</u> - No</li>
+					<li><u>Common bloopers</u> - All components down the hierarchy would not update as well</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">5. </p><pre><code>componentWillUpdate(nextProps, nextState)</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>Allows you to do something right before rendering</li>
+					<li>componentWillReceiveProps serves most of this use case</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Used if you are controlling shouldComponentUpdate</li>
+					<li><u>Can call setState</u> - No</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">6. </p><pre><code>componentDidUpdate()</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>
+						Dom related tweaks on receiving new props/re-render
+						<ul>
+							<li>Update masonry grid if items have been added/removed</li>
+							<li>Animate nav highlight (NavigationTabs component)</li>
+						</ul>
+					</li>
+					<li>componentWillReceiveProps serves most of this use case</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Updating the DOM in response to prop or state changes.</li>
+					<li><u>Can call setState</u> - Yes</li>
+					<li><u>Common bloopers</u> - A unchecked setState can cause an infinite loop</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<h2>Unmounting - Death phase</h2>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">7. </p><pre><code>componentWillUnmount()</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>Time for cleanup</li>
+					<li>Remove any event listeners/timers/cancel any outgoing network requests</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Cleaning up any leftovers</li>
+					<li><u>Can call setState</u> - No</li>
+					<li><u>Common bloopers</u> - Not implementing this method and letting timers go on forever</li>
+				</ul>
+			</section>
+		</section>
+		<section>
+			<h2>A new lifecycle method</h2>
+		</section>
+		<section>
+			<div style="font-size: 40px"><p style="position:absolute; left: 0; margin-top: -8px">8. </p><pre><code>componentDidCatch(errorString, errorInfo)</code></pre></div>
+			<section></section>
+			<section>
+				<ul>
+					<li>Catch and respond to any errors that the component might have caused</li>
+				</ul>
+				<br>
+				<br>
+				<ul class="fragment fade-in">
+					<li><u>Most Common Use Case</u> - Error logging, setting error flags</li>
+					<li><u>Can call setState</u> - Yes</li>
+				</ul>
+			</section>
 		</section>
 	</div>
 </div>
